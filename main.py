@@ -5,8 +5,10 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 from config import BOT_TOKEN
 
+# Наши модули
 from bot.keyboards.audition import audition_menu
 from bot.handlers.audition import router as audition_router
+from bot.handlers.navigation import router as navigation_router
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,7 +28,9 @@ async def main():
             parse_mode="Markdown"
         )
 
+    # Подключаем роутеры
     dp.include_router(audition_router)
+    dp.include_router(navigation_router)
 
     print("🎵 Бот прослушиваний запущен!")
     await dp.start_polling(bot)
