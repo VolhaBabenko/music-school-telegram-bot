@@ -5,8 +5,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 from config import BOT_TOKEN
 
-# Наши модули
-from bot.keyboards.audition import audition_menu
+from bot.keyboards.audition import main_menu
 from bot.handlers.audition import router as audition_router
 from bot.handlers.navigation import router as navigation_router
 
@@ -24,11 +23,10 @@ async def main():
             "📅 **Запись на ПРОСЛУШИВАНИЕ**\n\n"
             "Определим уровень ребёнка и подберём преподавателя.\n\n"
             "Нажми кнопку ниже, чтобы начать:",
-            reply_markup=audition_menu(),
+            reply_markup=main_menu(),
             parse_mode="Markdown"
         )
 
-    # Подключаем роутеры
     dp.include_router(audition_router)
     dp.include_router(navigation_router)
 
