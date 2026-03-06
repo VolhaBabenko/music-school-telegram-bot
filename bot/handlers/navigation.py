@@ -1,30 +1,22 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, Message
-from aiogram.fsm.context import FSMContext
-from bot.keyboards.audition import audition_menu, instrument_menu
+from aiogram.types import Message
+
+from bot.keyboards.audition import main_menu, audition_menu
 
 router = Router()
 
-@router.callback_query(F.data == "main_menu")
-async def back_to_main_menu(callback: CallbackQuery, state: FSMContext):
-    """Возврат в главное меню"""
-    await state.clear()
-    await callback.message.edit_text(
-        "🎼 **Музыкальная школа Меппел**\n\n"
-        "📅 **Запись на ПРОСЛУШИВАНИЕ**\n\n"
-        "Выберите действие:",
-        reply_markup=audition_menu(),
-        parse_mode="Markdown"
-    )
-    await callback.answer("🏠 Главное меню")
 
-@router.callback_query(F.data == "choose_instrument")
-async def back_to_instruments(callback: CallbackQuery, state: FSMContext):
-    """Возврат к выбору инструмента"""
-    await callback.message.edit_text(
-        "🎼 **Запись на прослушивание**\n\n"
-        "Выберите инструмент для ребёнка:",
-        reply_markup=instrument_menu(),
-        parse_mode="Markdown"
+@router.message(F.text == "Записаться на прослушивание")
+async def open_audition_menu(message: Message):
+    await message.answer(
+        "Выбери инструмент для прослушивания:",
+        reply_markup=audition_menu()
     )
-    await callback.answer("🎵 Инструменты")
+
+
+@router.message(F.text == "⬅️ Назад в меню")
+async def back_to_main_menu(message: Message):
+    await message.answer(
+        "Главное меню:",
+        reply_markup=main_menu()
+    )
